@@ -385,4 +385,41 @@ weather_df %>%
     ## Warning: Removed 17 rows containing non-finite outside the scale range
     ## (`stat_density_ridges()`).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](viz_i_files/figure-gfm/unnamed-chunk-21-1.png)<!-- --> \## Save and
+Embed
+
+How to save a scatterplot into your folder, saved as weather_plot into a
+pdf file.
+
+``` r
+weather_plot =
+weather_df %>% 
+  ggplot(aes(x=tmin, y=tmax, color=name)) + geom_point(alpha = 0.5)
+
+ggsave("weather_plot.pdf", weather_plot)
+```
+
+    ## Saving 7 x 5 in image
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+You can also change how the figure is embedded here
+
+``` r
+weather_plot
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_i_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+``` r
+weather_plot
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_i_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
