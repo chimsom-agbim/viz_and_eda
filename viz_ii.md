@@ -119,4 +119,83 @@ labs(
     ## Warning: Removed 17 rows containing missing values or values outside the scale range
     ## (`geom_point()`).
 
-![](viz_ii_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](viz_ii_files/figure-gfm/unnamed-chunk-3-1.png)<!-- --> \##Scales
+Start with the same plot, but now I can change the scale on each axis. I
+can also change the y axis so the values are plotted by the sqrt of the
+original.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+scale_x_continuous(
+  breaks = c(-15, 0, 15),
+  labels = c("-15 C", "0", "15")
+) +
+  scale_y_continuous(
+    trans = "sqrt"
+  )
+```
+
+    ## Warning in transformation$transform(x): NaNs produced
+
+    ## Warning in scale_y_continuous(trans = "sqrt"): sqrt transformation introduced
+    ## infinite values.
+
+    ## Warning: Removed 142 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_ii_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> Adding color
+to scales. The numbers you enter into the hue function correspond to
+colors. The further the numbers are apart, I believe the further the
+difference in the hue. I am also telling the code to change name to
+location for the hues.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  scale_color_hue(
+    name = "Location",
+    h= c(100, 200))
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_ii_files/figure-gfm/unnamed-chunk-5-1.png)<!-- --> You can also
+use colors from the viridis color scale- I guess the main benefit is for
+color blind patients, but truly I am not a fan of this scale.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  )
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_ii_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->

@@ -56,4 +56,57 @@ labs(
   caption = "Data from the rnoaa package; temperatures in 2017"
 )
 ```
+##Scales 
+Start with the same plot, but now I can change the scale on each axis. I can also change the y axis so the values are plotted by the sqrt of the original. 
 
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+scale_x_continuous(
+  breaks = c(-15, 0, 15),
+  labels = c("-15 C", "0", "15")
+) +
+  scale_y_continuous(
+    trans = "sqrt"
+  )
+```
+Adding color to scales. The numbers you enter into the hue function correspond to colors. The further the numbers are apart, I believe the further the difference in the hue. I am also telling the code to change name to location for the hues. 
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  scale_color_hue(
+    name = "Location",
+    h= c(100, 200))
+```
+You can also use colors from the viridis color scale- I guess the main benefit is for color blind patients, but truly I am not a fan of this scale. 
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  )
+```
