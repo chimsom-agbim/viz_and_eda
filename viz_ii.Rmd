@@ -1,0 +1,59 @@
+---
+title: "Visualization"
+subtitle: "Part 2"
+output: github_document
+---
+
+We load patchwork to make different types of plots
+```{r setup}
+library(tidyverse)
+library(patchwork)
+```
+
+## Load the weather data
+So rnoaa is a publicly available source of data. The three titles in the first row c("shhg")are different weather stations on the public site and I'm getting info from them. We are looking at particular variables, precipitation and min and max temp. So it's getting this info from the publicly available site. The names are the locations of those weather stations. The Tmin was also divided by 10 because of how it was entered into the set.
+
+```{r}
+weather_df = 
+  rnoaa::meteo_pull_monitors(
+    c("USW00094728", "USW00022534", "USS0023B17S"),
+    var = c("PRCP", "TMIN", "TMAX"), 
+    date_min = "2021-01-01",
+    date_max = "2022-12-31") |>
+  mutate(
+    name = case_match(
+      id, 
+      "USW00094728" ~ "CentralPark_NY", 
+      "USW00022534" ~ "Molokai_HI",
+      "USS0023B17S" ~ "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10) |>
+  select(name, id, everything())
+
+weather_df
+```
+## Remember this plot?
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5)
+  
+```
+
+
+## Labels
+
+We can add labels to this plot
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+)
+```
+
