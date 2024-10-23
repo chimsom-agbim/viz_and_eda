@@ -451,7 +451,7 @@ then waterhole). You can use the factor function to change the
 categorization of name from a character variable to a factor variable,
 so that you can control how it’s arranged. I told it to put Molokai_HI
 first. I will create a violin plot. For some reason, I used the same
-code
+code, but the factor function didn’t quite work.
 
 ``` r
 weather_df %>% 
