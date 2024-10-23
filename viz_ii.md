@@ -120,6 +120,7 @@ labs(
     ## (`geom_point()`).
 
 ![](viz_ii_files/figure-gfm/unnamed-chunk-3-1.png)<!-- --> \##Scales
+
 Start with the same plot, but now I can change the scale on each axis. I
 can also change the y axis so the values are plotted by the sqrt of the
 original.
@@ -151,11 +152,12 @@ scale_x_continuous(
     ## Warning: Removed 142 rows containing missing values or values outside the scale range
     ## (`geom_point()`).
 
-![](viz_ii_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> Adding color
-to scales. The numbers you enter into the hue function correspond to
-colors. The further the numbers are apart, I believe the further the
-difference in the hue. I am also telling the code to change name to
-location for the hues.
+![](viz_ii_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+Adding color to scales. The numbers you enter into the hue function
+correspond to colors. The further the numbers are apart, I believe the
+further the difference in the hue. I am also telling the code to change
+name to location for the hues.
 
 ``` r
 weather_df %>% 
@@ -199,3 +201,129 @@ labs(
     ## (`geom_point()`).
 
 ![](viz_ii_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+## Themes
+
+You can change the background of the plot, the location of legends, etc
+using the theme function.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE) +
+  theme(legend.position = "bottom") 
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_ii_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+You can change the theme to black and white instead of gray in the
+background, and get rid of the box around the plot.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE) +
+  theme_minimal()
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_ii_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+BUT the order in which you place the code for theme matters. It will use
+the last code for theme and override anything else previously entered.
+Example, you’ll see that the legend is not at the bottom anymore, though
+I’ve included it in the code.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE) +
+  theme(legend.position = "bottom") +
+  theme_minimal()
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_ii_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+So you have to change the theme first
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y=tmax, color = name)) +
+  geom_point(alpha=0.5) +
+labs(
+  title = "Temperature plot",
+  x = "Minimum daily temperature (C)",
+  y = "Maximum daily temperature (C)",
+  caption = "Data from the rnoaa package; temperatures in 2017"
+) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE) +
+  theme_minimal() +
+  theme(legend.position = "bottom") 
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](viz_ii_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+## Setting options
+
+So this is a set of code you can run at the beginning of your file once
+you load in tinyverse so that the plots you make already have this
+organization. But we set the evaluation to false so it’s not
+particularly run in this code. Asp = aspect ratio
+
+``` r
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6, 
+  fig.asp = 0.6, 
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(ggplot2.continuous.color = "viridis", 
+        ggplot2.continuous.fill ="viridis")
+
+scale_color_discrete = scale_color_viridis_d()
+scale_fill_discrete = scale_fill_viridis_d
+```
