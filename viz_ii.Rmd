@@ -264,3 +264,18 @@ tmax_date_p =
 (tmax_tmin_p + prcp_dens_p) / tmax_date_p
 ```
 
+## Data manipulation 
+
+GGplot automatically arranges variables in alphabetical order (as you can see in previous plots, central park is always first, then molokai then waterhole). You can use the factor function to change the categorization of name from a character variable to a factor variable, so that you can control how it's arranged. I told it to put Molokai_HI first. I will create a violin plot. For some reason, I used the same code
+
+```{r}
+weather_df %>% 
+  mutate(
+    name = as.factor(name),
+    name = forcats::fct_relevel(name, c("Molokai_HI"))
+  ) %>% 
+    ggplot(aes(x= name, y=tmax, fill= name)) +
+    geom_violin(alpha=0.5)
+weather_df
+```
+
