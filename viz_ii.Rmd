@@ -210,3 +210,57 @@ scale_color_discrete = scale_color_viridis_d()
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
+## Data arguments in`geom`
+
+I'm setting a data set for one set of data points, and then another data set to plot as a line. 
+
+```{r}
+central_park = 
+  weather_df %>% 
+  filter (name == "CentralPark_NY")
+central_park
+
+Molokai =
+  weather_df %>% 
+  filter (name == "Molokai_HI")
+Molokai
+
+ggplot(data = Molokai, aes(x = date, y = tmax, color = name))+ 
+  geom_point() + geom_line(data = central_park)
+  
+```
+## Learning about the `Patchwork` function
+
+Recall the facet function separates plots
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, color = name)) + 
+  geom_density() +
+facet_grid(.~name)
+```
+Sometimes you can't facet, so we can use patchwork for that instead. In this case, we entered code for 3 different plots, and made 1 a density plot with the other 2 as scatterplots. This code at the bottom `(tmax_tmin_p + prcp_dens_p) / tmax_date_p` tells R how I want these plots to be arranged-- two on top and then one on bottom. 
+
+```{r}
+tmax_tmin_p = 
+  weather_df |> 
+  ggplot(aes(x = tmax, y = tmin, color = name)) + 
+  geom_point(alpha = .5) +
+  theme(legend.position = "none")
+
+prcp_dens_p = 
+  weather_df |> 
+  filter(prcp > 0) |> 
+  ggplot(aes(x = prcp, fill = name)) + 
+  geom_density(alpha = .5) + 
+  theme(legend.position = "none")
+
+tmax_date_p = 
+  weather_df |> 
+  ggplot(aes(x = date, y = tmax, color = name)) + 
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) + 
+  theme(legend.position = "bottom")
+
+(tmax_tmin_p + prcp_dens_p) / tmax_date_p
+```
+
